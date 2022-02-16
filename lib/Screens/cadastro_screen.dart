@@ -1,4 +1,3 @@
-import 'package:boticario_teste/Screens/login_screen.dart';
 import 'package:boticario_teste/Widgets/color_back.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,8 +8,6 @@ class CadastroScreen extends StatefulWidget {
 }
 
 class _CadastroScreenState extends State<CadastroScreen> {
-
-
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _nomeController = TextEditingController();
@@ -33,7 +30,9 @@ class _CadastroScreenState extends State<CadastroScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){FocusScope.of(context).unfocus();},
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -42,7 +41,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.clear),
-              onPressed: (){
+              onPressed: () {
                 _nomeController.clear();
                 _emailController.clear();
                 _senhaController.clear();
@@ -56,12 +55,15 @@ class _CadastroScreenState extends State<CadastroScreen> {
             ListView(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(left:16.0, right: 16.0, top: 40.0,),
+                  padding: EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    top: 40.0,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-
                       TextField(
                         decoration: InputDecoration(
                           icon: Icon(
@@ -69,21 +71,19 @@ class _CadastroScreenState extends State<CadastroScreen> {
                             color: Colors.black,
                           ),
                           hintText: "Nome",
-                          hintStyle: TextStyle(
-                              fontSize: 16.0),
+                          hintStyle: TextStyle(fontSize: 16.0),
                         ),
                         controller: _nomeController,
-                        onSubmitted: (_){
+                        onSubmitted: (_) {
                           FocusScope.of(context).requestFocus(_focusSenha);
                         },
                       ),
-
-                      const SizedBox(height: 20.0,),
-
+                      const SizedBox(
+                        height: 20.0,
+                      ),
                       TextField(
                         onSubmitted: (_) {
-                          FocusScope.of(context).requestFocus(
-                              _focusSenha);
+                          FocusScope.of(context).requestFocus(_focusSenha);
                         },
                         controller: _emailController,
                         decoration: InputDecoration(
@@ -92,13 +92,12 @@ class _CadastroScreenState extends State<CadastroScreen> {
                             color: Colors.black,
                           ),
                           hintText: "Email",
-                          hintStyle: TextStyle(
-                              fontSize: 16.0),
+                          hintStyle: TextStyle(fontSize: 16.0),
                         ),
                       ),
-
-                      const SizedBox(height: 20.0,),
-
+                      const SizedBox(
+                        height: 20.0,
+                      ),
                       TextField(
                         onSubmitted: (_) {
                           FocusScope.of(context).unfocus();
@@ -112,38 +111,38 @@ class _CadastroScreenState extends State<CadastroScreen> {
                             color: Colors.black,
                           ),
                           hintText: "Senha",
-                          hintStyle: TextStyle(
-                              fontSize: 16.0),
+                          hintStyle: TextStyle(fontSize: 16.0),
                         ),
                       ),
-
-                      const SizedBox(height: 20.0,),
-
-                      FlatButton(
-                        child: Text("Cadastrar",
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          padding: EdgeInsets.only(top: 14.0, bottom: 14.0),
+                        ),
+                        child: Text(
+                          "Cadastrar",
                           style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16.0,),
+                            color: Colors.black,
+                            fontSize: 16.0,
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        padding: EdgeInsets.only(top: 14.0, bottom: 14.0),
-                        onPressed: (){
-                          if(_emailController.text.isNotEmpty &&
+                        onPressed: () {
+                          if (_emailController.text.isNotEmpty &&
                               _senhaController.text.isNotEmpty &&
-                              _nomeController.text.isNotEmpty){
+                              _nomeController.text.isNotEmpty) {
                             _onSuccess();
-                          }
-                          else  if (_emailController.text.isEmpty &&
+                          } else if (_emailController.text.isEmpty &&
                               _senhaController.text.isEmpty &&
-                              _nomeController.text.isEmpty){
+                              _nomeController.text.isEmpty) {
                             _onFail();
                           }
                         },
-
                       ),
-
                     ],
                   ),
                 ),
@@ -155,22 +154,31 @@ class _CadastroScreenState extends State<CadastroScreen> {
     );
   }
 
-
-  void _onSuccess(){
-    _scaffoldKey.currentState.showSnackBar( SnackBar(
-      content: Text("Usuário criado com sucesso",),
-      duration: Duration(seconds: 2,),
+  void _onSuccess() {
+    _scaffoldKey.currentState!.showSnackBar(SnackBar(
+      content: Text(
+        "Usuário criado com sucesso",
+      ),
+      duration: Duration(
+        seconds: 2,
+      ),
       backgroundColor: Color.fromARGB(255, 4, 125, 141),
     ));
-    Future.delayed(Duration(seconds: 2,)).then((_){
+    Future.delayed(Duration(
+      seconds: 2,
+    )).then((_) {
       Navigator.of(context).pop();
     });
   }
 
-  void _onFail(){
-    _scaffoldKey.currentState.showSnackBar( SnackBar(
-      content: Text("Falha ao criar usuário ",),
-      duration: Duration(seconds: 2,),
+  void _onFail() {
+    _scaffoldKey.currentState!.showSnackBar(SnackBar(
+      content: Text(
+        "Falha ao criar usuário ",
+      ),
+      duration: Duration(
+        seconds: 2,
+      ),
       backgroundColor: Color.fromARGB(255, 4, 125, 141),
     ));
   }

@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
+
 import 'package:flutter/material.dart';
-import 'package:splashscreen/splashscreen.dart';
 import 'login_screen.dart';
 
 class Splash extends StatefulWidget {
@@ -8,43 +9,55 @@ class Splash extends StatefulWidget {
   _SplashState createState() => _SplashState();
 }
 
-Widget _introScreen() {
-  return Stack(
-    children: <Widget>[
-      SplashScreen(
-        loadingText: Text("Essência Em Transformar",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),),
-
-        seconds: 5,
-        gradientBackground: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            Colors.white,
-            Colors.white10,
-          ],
-        ),
-        navigateAfterSeconds: LoginScreen(),
-        loaderColor: Color.fromARGB(255, 4, 125, 141),
-      ),
-       Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              scale: 2.0,
-              image: AssetImage("assets/logo.png"),
-            ),
-          ),
-        ),
-    ],
-  );
-}
-
 class _SplashState extends State<Splash> {
   @override
+  void initState() {
+    super.initState();
+    Timer(
+        Duration(seconds: 5),
+        () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => LoginScreen())));
+  }
+
+
   Widget build(BuildContext context) {
-    return _introScreen();
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.cyanAccent,
+        body: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(30.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset("assets/logo.png"),
+                  Padding(
+                    padding: EdgeInsets.only(top: 15.0),
+                  ),
+                  Text(
+                    "Essência em Transformar",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                      fontSize: 24.0,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100.0,
+                  ),
+                  Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Color.fromARGB(255, 4, 125, 141),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

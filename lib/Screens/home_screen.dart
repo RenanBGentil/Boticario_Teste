@@ -1,11 +1,11 @@
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:boticario_teste/Api/Api.dart';
 import 'package:boticario_teste/Widgets/custom_drawer.dart';
 import 'package:boticario_teste/Widgets/post_row.dart';
 import 'package:flutter/material.dart';
 
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
 const request = "https://gb-mobile-app-teste.s3.amazonaws.com/data.json";
 
@@ -16,14 +16,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<dynamic> newsMessage;
-  User name;
+  late List<dynamic> newsMessage;
+  late User name;
 
-  Future< Map> getData() async {
-    http.Response response = await http.get(request);
-    print(response.body);
-    return json.decode(response.body);
-  }
+  // Future< Map> getData() async {
+  //   http.Response response = await http.get(request);
+  //   print(response.body);
+  //   return json.decode(response.body);
+  // }
 
   @override
   Widget build(BuildContext context) {

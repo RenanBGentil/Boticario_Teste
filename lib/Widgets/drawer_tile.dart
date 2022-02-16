@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DrawerTile extends StatelessWidget {
@@ -7,7 +6,7 @@ class DrawerTile extends StatelessWidget {
   final String text;
 
 
-  const DrawerTile({Key key, this.icon, this.text}) : super(key: key);
+  const DrawerTile({Key? key, required this.icon, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

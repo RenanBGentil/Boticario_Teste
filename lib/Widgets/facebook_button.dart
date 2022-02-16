@@ -4,9 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class FacebookButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  Container(
-      margin: const EdgeInsets.only(
-          left: 30.0, right: 30.0, top: 20.0),
+    return Container(
+      margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -16,46 +15,44 @@ class FacebookButton extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius
-                            .circular(30.0),
-                      ),
-                      color: Color(0Xff3B5998),
+                    child: TextButton(
                       onPressed: () => {},
+                      style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        backgroundColor: Color(0Xff3B5998),
+                      ),
                       child: Container(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment
-                              .center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Expanded(
-                              child: FlatButton(
+                              child: TextButton(
                                 onPressed: () {},
-                                padding: EdgeInsets
-                                    .only(
-                                  top: 20.0,
-                                  bottom: 20.0,
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.only(
+                                    top: 20.0,
+                                    bottom: 20.0,
+                                  ),
                                 ),
-                                child:Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Icon(
                                       FontAwesomeIcons.facebookF,
-                                      color:Colors.white,
+                                      color: Colors.white,
                                     ),
                                     Text(
                                       "FACEBOOK",
-                                      textAlign: TextAlign
-                                          .center,
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          color: Colors
-                                              .white,
-                                          fontWeight: FontWeight
-                                              .bold),
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ],
                                 ),
-
                               ),
                             ),
                           ],
