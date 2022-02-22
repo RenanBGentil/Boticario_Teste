@@ -3,8 +3,12 @@ import 'package:boticario_teste/Widgets/color_back.dart';
 import 'package:boticario_teste/Widgets/enter_with.dart';
 import 'package:boticario_teste/Widgets/facebook_button.dart';
 import 'package:boticario_teste/Widgets/google_button.dart';
+import 'package:boticario_teste/stores/login_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 import 'cadastro_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,13 +16,37 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-final _focusSenha = FocusNode();
-final _emailController = TextEditingController();
-final _senhaController = TextEditingController();
-
 class _LoginScreenState extends State<LoginScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _focusSenha = FocusNode();
+  final _emailController = TextEditingController();
+  final _senhaController = TextEditingController();
+  late ReactionDisposer disposer;
+  LoginStore loginStore = LoginStore();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    loginStore = Provider.of<LoginStore>(context);
+    disposer = reaction((_) => loginStore.loggedIn, (loggedIn) {
+      if (loggedIn != null) {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
+      }
+    });
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   loginStore = Provider.of<LoginStore>(context);
+  //   disposer = reaction((_) => loginStore.loggedIn, (loggedIn) {
+  //     if (loggedIn != null)
+  //       Navigator.of(context)
+  //           .pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -50,69 +78,78 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 50.0,
                         ),
-                        TextField(
-                          onSubmitted: (_) {
-                            FocusScope.of(context).requestFocus(_focusSenha);
-                          },
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                            icon: Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Colors.black,
+                        Observer(builder: (_) {
+                          return TextField(
+                            onChanged: loginStore.setEmail,
+                            onSubmitted: (_) {
+                              FocusScope.of(context).requestFocus(_focusSenha);
+                            },
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              icon: Icon(
+                                FontAwesomeIcons.envelope,
+                                color: Colors.black,
+                              ),
+                              hintText: "Email",
+                              enabled: !loginStore.loading,
+                              hintStyle: TextStyle(fontSize: 16.0),
                             ),
-                            hintText: "Email",
-                            hintStyle: TextStyle(fontSize: 16.0),
-                          ),
-                        ),
+                          );
+                        }),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        TextField(
-                          onSubmitted: (_) {
-                            FocusScope.of(context).unfocus();
-                          },
-                          focusNode: _focusSenha,
-                          controller: _senhaController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            icon: Icon(
-                              FontAwesomeIcons.lock,
-                              color: Colors.black,
+                        Observer(builder: (_) {
+                          return TextField(
+                            onChanged: loginStore.setPassword,
+                            onSubmitted: (_) {
+                              FocusScope.of(context).unfocus();
+                            },
+                            focusNode: _focusSenha,
+                            controller: _senhaController,
+                            obscureText: !loginStore.passwordVisible,
+                            decoration: InputDecoration(
+                              icon: loginStore.passwordVisible
+                                  ? Icon(
+                                      FontAwesomeIcons.lockOpen,
+                                      color: Colors.black,
+                                    )
+                                  : Icon(
+                                      FontAwesomeIcons.lock,
+                                      color: Colors.black,
+                                    ),
+                              hintText: "Senha",
+                              enabled: !loginStore.loading,
+                              hintStyle: TextStyle(fontSize: 16.0),
                             ),
-                            hintText: "Senha",
-                            hintStyle: TextStyle(fontSize: 16.0),
-                          ),
-                        ),
+                          );
+                        }),
                         const SizedBox(
                           height: 50.0,
                         ),
-                        TextButton(
-                          onPressed: () {
-                            if (_emailController.text.isNotEmpty &&
-                                _senhaController.text.isNotEmpty) {
-                              _onSuccess();
-                            } else if (_emailController.text.isEmpty &&
-                                _senhaController.text.isEmpty) {
-                              _onFail();
-                            }
+                        Observer(
+                          builder: (_) {
+                            return TextButton(
+                              onPressed: loginStore.loginPressed,
+                              child: Text(
+                                "Entrar",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 12.0,
+                                  horizontal: 132.0,
+                                ),
+                                shadowColor: Colors.black,
+                              ),
+                            );
                           },
-                          child: Text(
-                            "Entrar",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              vertical: 12.0,
-                              horizontal: 132.0,
-                            ),
-                            shadowColor: Colors.black,
-                          ),
                         ),
                         const SizedBox(
                           height: 8.0,
@@ -187,6 +224,12 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    disposer();
+    super.dispose();
   }
 
   void _onSuccess() {

@@ -1,4 +1,5 @@
 import 'package:boticario_teste/Screens/home_screen.dart';
+import 'package:boticario_teste/Screens/login_screen.dart';
 import 'package:boticario_teste/Screens/perfil_screen.dart';
 import 'package:boticario_teste/Screens/setting_screen.dart';
 import 'package:boticario_teste/Screens/sobre_screen.dart';
@@ -6,7 +7,10 @@ import 'package:boticario_teste/Screens/splash_screen.dart';
 import 'package:boticario_teste/Widgets/color_back.dart';
 import 'package:boticario_teste/Widgets/custom_header.dart';
 import 'package:boticario_teste/Widgets/drawer_tile.dart';
+import 'package:boticario_teste/stores/login_store.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatelessWidget {
 
@@ -64,6 +68,7 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: (){
+                    Provider.of<LoginStore>(context, listen: false).logout();
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => Splash()));
                   },
